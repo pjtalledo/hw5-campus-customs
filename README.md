@@ -97,7 +97,7 @@ Not required for normal dashboard use — the backend spawns it as needed.
 
 ```bash
 cd backend
-uvicorn main --reload --port 8000
+uvicorn main:app --reload --port 8000
 ```
 Accessible at `http://localhost:8000` (interactive docs at `/docs`). CORS is restricted to `http://localhost:5173` and `http://localhost:3000` (and their `127.0.0.1` equivalents) — not a wildcard.
 
@@ -204,11 +204,11 @@ Neither ticket was left open due to a defect; both were investigated in depth (s
 ## Troubleshooting
 
 - **"PORTKEY_API_KEY is not set"**: check your `.env` location against the note in "Environment setup" above.
-- **`uvicorn main --reload --port 8000` fails with an import error**: make sure you're running it from inside the `backend/` directory, not the repo root.
+- **`uvicorn main:app --reload --port 8000` fails with an import error**: make sure you're running it from inside the `backend/` directory, not the repo root.
 - **MCP tool calls hang or fail**: confirm `.venv/Scripts/python.exe` (or `.venv/bin/python`) exists and `fastmcp` is installed; try running `mcp_server/server.py` directly to see the startup banner.
 - **CORS errors in the browser console**: the frontend must run on `localhost:5173` or `localhost:3000` — the backend's CORS allowlist is intentionally narrow, not a wildcard.
 - **Port already in use**: check for a leftover `uvicorn`/`vite` process from a previous run before starting a new one.
 
 ## Reproducibility
 
-This project was verified end-to-end from a fully isolated clean clone (fresh virtual environment, `pip install -r requirements.txt`, `npm ci`) before submission: all backend modules imported cleanly, the MCP server listed all 11 tools, the exact `uvicorn main --reload --port 8000` command worked, `npm run build` and `npm run dev` both succeeded, and the database reset workflow was exercised safely on the isolated copy only. See `output/problem11_pre_submission_audit.md` for the full reproducibility report.
+This project was verified end-to-end from a fully isolated clean clone (fresh virtual environment, `pip install -r requirements.txt`, `npm ci`) before submission: all backend modules imported cleanly, the MCP server listed all 11 tools, the exact `uvicorn main:app --reload --port 8000` command worked, `npm run build` and `npm run dev` both succeeded, and the database reset workflow was exercised safely on the isolated copy only. See `output/problem11_pre_submission_audit.md` for the full reproducibility report.
