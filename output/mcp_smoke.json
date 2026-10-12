@@ -1,0 +1,103 @@
+{
+  "status": "GENUINE_MCP_INVOCATION_SUCCEEDED_VIA_CODEX",
+  "technical_result": "VERIFIED PASS -- all three MCP tools were genuinely invoked through an authenticated MCP client (Codex) and their outputs independently matched the database.",
+  "assignment_compliance_result": "NOT VERIFIED -- whether the original Homework 5 Problem 4 instructions accept Codex (instead of Claude Code specifically) as the 'vibe coder' for this smoke test could not be confirmed. No local copy of the full original assignment exists (searched the entire course directory tree and homeworks-index.html; the Homework 5 panel there is empty). This must be confirmed with the professor or the original assignment document before treating Problem 4 as fully compliant.",
+  "client_used": {
+    "name": "Codex CLI",
+    "version": "codex-cli 0.162.0-alpha.2",
+    "binary_path": "C:\\Users\\piero\\.vscode\\extensions\\openai.chatgpt-26.1002.51308-win32-x64\\bin\\windows-x86_64\\codex.exe",
+    "note": "This is the official OpenAI Codex VS Code extension's own bundled binary, run directly (not copied, moved, or installed anywhere). It reads the same ~/.codex/config.toml used by the standalone Codex CLI.",
+    "model": "gpt-5.6-luna",
+    "model_provider": "portkey",
+    "auth": "Existing PORTKEY_API_KEY from the course .env, already configured in ~/.codex/config.toml before this session -- no new subscription or API credential was created or required."
+  },
+  "repair_applied": {
+    "root_cause": "The standalone Codex CLI install (~/.codex/.sandbox-bin/codex.exe, v0.154.0-alpha.6.2) was missing its 'code-mode host' companion executable (codex-code-mode-host.exe), which that build requires to route any tool call. The official, already-installed VS Code Codex extension (openai.chatgpt v26.1002.51308) bundles a newer, matched pair of codex.exe (v0.162.0-alpha.2) and codex-code-mode-host.exe in the same directory.",
+    "fix": "Ran the VS Code extension's own bundled codex.exe directly for all MCP testing, instead of the standalone CLI's codex.exe. No files were copied, moved, replaced, installed, or downloaded. This was proposed and explicitly approved by the user before being carried out.",
+    "verified_before_use": "Confirmed both codex.exe and codex-code-mode-host.exe exist together in the extension's bin/windows-x86_64 folder, and that 'codex mcp list' / 'codex mcp get campus-customs-db' (run via this bundled binary) show the server registered and enabled, using the exact same ~/.codex/config.toml as before."
+  },
+  "approval_flag_used": {
+    "flag": "--approve-for-me",
+    "meaning": "Documented, non-dangerous Codex CLI flag: 'Route approval requests through automatic review using the workspace-write sandbox.' This was required because, under the default approval policy, Codex's safety layer blocks MCP tool calls pending approval even when --skip-git-repo-check and approval_policy=never are set for shell commands -- MCP tool calls have their own approval gate.",
+    "not_used": "--dangerously-bypass-approvals-and-sandbox was deliberately NOT used, since it is documented as 'EXTREMELY DANGEROUS' and bypasses sandboxing broadly, not just MCP tool approval."
+  },
+  "invalid_attempt_discarded": {
+    "ticket": 101,
+    "prompt_used": "Using the Campus Customs MCP tools, check the restocking situation for ticket 101, including available inventory, vendor information, and relevant invoice details.",
+    "what_happened": "With this exact assignment-style wording (no explicit instruction to call the MCP tool by name), Codex's own reasoning concluded the MCP tool 'is not exposed in this session' and instead read mcp_server/server.py's source code and ran 'python -c \"...import server; print(server.get_ticket_101_restock_info())\"' as a local subprocess -- a direct Python function call, NOT a genuine MCP invocation.",
+    "disposition": "DISCARDED as invalid evidence. This is exactly the kind of substitution the user explicitly ruled out. Not counted as a pass, not used anywhere in the verified results below. Reported here transparently rather than hidden.",
+    "resolution": "All three official tests below used a prompt that explicitly instructs Codex to call the named tool directly via MCP and not by reading/running local source files, which reliably produced genuine MCP calls across 3/3 tickets."
+  },
+  "tests": [
+    {
+      "ticket": 101,
+      "prompt": "Using the Campus Customs MCP tools, call the get_ticket_101_restock_info tool from the campus-customs-db MCP server directly, and report its exact JSON output.",
+      "mcp_tool_name": "get_ticket_101_restock_info",
+      "codex_transcript_evidence": "mcp: campus-customs-db/get_ticket_101_restock_info started / mcp: campus-customs-db/get_ticket_101_restock_info (completed)",
+      "actual_tool_output": {
+        "ticket": {"id": 101, "type": "customer_order", "requester": "Tauhid Zaman", "subject": "Bulldog tee", "sku": "CC-TEE-WHITE", "size": "S", "qty": 1, "lease_id": null, "invoice_id": 501, "status": "open", "notes": "Needs a tee in size S.", "created_at": "2026-08-31T09:15:00-04:00"},
+        "requested_sku": "CC-TEE-WHITE",
+        "requested_size": "S",
+        "requested_qty": 1,
+        "inventory_at_sku_size": {"sku": "CC-TEE-WHITE", "name": "Classic Bulldog Tee", "size": "S", "qty": 0, "location": "Aisle B"},
+        "linked_invoice": {"id": 501, "vendor_id": 1, "amount": 840.0, "due_date": "2026-08-28", "status": "open", "description": "Rush reprint CC-TEE-WHITE S"},
+        "supplying_vendor": {"id": 1, "name": "Bulldog Print Co", "specialty": "apparel reprint", "lead_days": 5}
+      },
+      "database_verification_method": "Independent fresh SQL queries against data/campus_customs_new.db (tickets, inventory, invoices, vendors), compared field-by-field via Python assert statements, separate from the tool's own code.",
+      "database_verification_result": "Exact match on every field (ticket, inventory_at_sku_size, linked_invoice, supplying_vendor).",
+      "status": "PASS"
+    },
+    {
+      "ticket": 102,
+      "prompt": "Using the Campus Customs MCP tools, check the rent obligation for ticket 102, including the due date and available cash. Call the get_ticket_102_rent_and_cash_info tool from the campus-customs-db MCP server directly via MCP (not by reading or running local source files), and report its exact JSON output.",
+      "mcp_tool_name": "get_ticket_102_rent_and_cash_info",
+      "codex_transcript_evidence": "mcp: campus-customs-db/get_ticket_102_rent_and_cash_info started / mcp: campus-customs-db/get_ticket_102_rent_and_cash_info (completed)",
+      "actual_tool_output": {
+        "ticket": {"id": 102, "type": "rent_notice", "requester": "Elm City Properties", "subject": "Rent due", "sku": null, "size": null, "qty": null, "lease_id": 1, "invoice_id": null, "status": "open", "notes": "Email: shop rent due in 2 days.", "created_at": "2026-08-31T11:05:00-04:00"},
+        "lease": {"id": 1, "space_name": "Chapel Street shop", "landlord": "Elm City Properties", "monthly_rent": 2400.0, "next_due": "2026-09-02", "notes": null},
+        "desk_date_today": "2026-08-31",
+        "cash_accounts": [{"name": "checking", "balance": 3400.0, "date": "2026-08-31"}]
+      },
+      "database_verification_method": "Independent fresh SQL queries against data/campus_customs_new.db (tickets, leases, desk, cash_accounts), compared field-by-field via Python assert statements.",
+      "database_verification_result": "Exact match on every field (ticket, lease, desk_date_today, cash_accounts).",
+      "status": "PASS"
+    },
+    {
+      "ticket": 103,
+      "prompt": "Using the Campus Customs MCP tools, check whether we have enough hoodies for ticket 103 and retrieve the relevant pricing information. Call the get_ticket_103_pricing_and_inventory_info tool from the campus-customs-db MCP server directly via MCP (not by reading or running local source files), and report its exact JSON output.",
+      "mcp_tool_name": "get_ticket_103_pricing_and_inventory_info",
+      "codex_transcript_evidence": "mcp: campus-customs-db/get_ticket_103_pricing_and_inventory_info started / mcp: campus-customs-db/get_ticket_103_pricing_and_inventory_info (completed)",
+      "actual_tool_output": {
+        "ticket": {"id": 103, "type": "price_override", "requester": "Yale AI Club", "subject": "Bulk hoodie discount", "sku": "CC-HOOD-NAVY", "size": "M", "qty": 20, "lease_id": null, "invoice_id": null, "status": "open", "notes": "Student org wants 20 hoodies, size M, asking for a bulk discount.", "created_at": "2026-08-31T16:55:00-04:00"},
+        "requested_sku": "CC-HOOD-NAVY",
+        "requested_size": "M",
+        "requested_qty": 20,
+        "inventory_requested_size": {"sku": "CC-HOOD-NAVY", "name": "Basic Hoodie Big Yale", "size": "M", "qty": 8, "location": "Aisle A"},
+        "inventory_all_sizes_for_sku": [
+          {"sku": "CC-HOOD-NAVY", "name": "Basic Hoodie Big Yale", "size": "L", "qty": 14, "location": "Aisle A"},
+          {"sku": "CC-HOOD-NAVY", "name": "Basic Hoodie Big Yale", "size": "M", "qty": 8, "location": "Aisle A"},
+          {"sku": "CC-HOOD-NAVY", "name": "Basic Hoodie Big Yale", "size": "S", "qty": 4, "location": "Aisle A"},
+          {"sku": "CC-HOOD-NAVY", "name": "Basic Hoodie Big Yale", "size": "XL", "qty": 6, "location": "Aisle A"}
+        ],
+        "pricing": {"sku": "CC-HOOD-NAVY", "unit_cost": 22.0, "list_price": 58.0},
+        "margin_per_unit": 36.0,
+        "margin_pct_of_list_price": 62.07
+      },
+      "database_verification_method": "Independent fresh SQL queries against data/campus_customs_new.db (tickets, inventory x2, pricing) plus an independently recomputed margin, compared field-by-field via Python assert statements.",
+      "database_verification_result": "Exact match on every field (ticket, inventory_requested_size, inventory_all_sizes_for_sku, pricing, margin_per_unit, margin_pct_of_list_price).",
+      "status": "PASS"
+    }
+  ],
+  "database_integrity_after_testing": {
+    "campus_customs_db_sha256": "23686a90d698f7fa6f901a3f0a9774db9cbb31e13151c9e5717275f3321f360a",
+    "campus_customs_new_db_sha256": "23686a90d698f7fa6f901a3f0a9774db9cbb31e13151c9e5717275f3321f360a",
+    "integrity_check_both_dbs": "ok",
+    "note": "All three tools are read-only SELECT queries with zero parameters; no mutation occurred. Hashes unchanged from every prior recorded value in this project."
+  },
+  "problems_1_3_preserved": "Verified output/harness.md, output/problem2_audit.md, output/problem3_audit.md, output/verification_checklist.md, mcp_server/server.py, and mcp_server/README.md all still exist and were not modified during this session.",
+  "prior_blocked_attempts_superseded_by_this_result": {
+    "claude_code_desktop_session": "Still blocked -- no MCP/trust surface exposed in this session type. Not re-attempted here.",
+    "claude_code_standalone_cli": "Still blocked on Pro/Max/pay-as-you-go authentication. Not re-attempted here.",
+    "codex_via_standalone_cli_sandbox_bin": "Previously failed due to the missing codex-code-mode-host.exe, as recorded in the prior AI_prompts.md entry. Resolved in this session by using the VS Code extension's matched bundled binary instead."
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "campus-customs-db": {
+      "command": ".venv/Scripts/python.exe",
+      "args": [
+        "mcp_server/server.py"
+      ]
+    }
+  }
+}

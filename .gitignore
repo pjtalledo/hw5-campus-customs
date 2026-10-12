@@ -1,0 +1,24 @@
+# Secrets -- never commit
+.env
+*.env.local
+
+# Python virtual environment
+.venv/
+__pycache__/
+*.pyc
+
+# Node / frontend
+frontend/node_modules/
+frontend/dist/
+
+# Editor / OS cruft
+.DS_Store
+Thumbs.db
+
+# Claude Code local config (may contain machine-specific settings)
+.claude/
+
+# Provenance copy of the original professor download -- not part of the
+# submitted structure; data/campus_customs.db and data/campus_customs_new.db
+# (tracked, required) remain included.
+data/data/

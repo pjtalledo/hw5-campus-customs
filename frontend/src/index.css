@@ -1,0 +1,95 @@
+:root {
+  --yale-blue: #00356b;
+  --yale-blue-light: #0a4a8f;
+  --gold: #c7b14e;
+  --ink: #1a1f27;
+  --paper: #ffffff;
+  --bg: #f3f5f8;
+  --border: #dde3ea;
+  --muted: #697182;
+  --danger: #b3261e;
+  --success: #2e7d32;
+  --radius: 12px;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+button {
+  font-family: inherit;
+}
+
+.btn {
+  border: none;
+  border-radius: 8px;
+  padding: 0.55rem 1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.08s ease, opacity 0.15s ease;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  background: var(--yale-blue);
+  color: white;
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: var(--yale-blue-light);
+}
+
+.btn--gold {
+  background: var(--gold);
+  color: #1a1a1a;
+}
+
+.btn--gold:hover:not(:disabled) {
+  filter: brightness(0.95);
+}
+
+.btn--block {
+  width: 100%;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.small {
+  font-size: 0.82rem;
+}
+
+.error-text {
+  color: var(--danger);
+  font-size: 0.88rem;
+  background: #fdecea;
+  border: 1px solid #f3c5c1;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+}

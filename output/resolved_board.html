@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campus Customs — Resolved Board</title>
+<style>
+  :root { --yale-blue:#00356b; --gold:#c7b14e; --ink:#1a1a1a; --bg:#f4f6f9; --border:#d7dee6; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background:var(--bg); color:var(--ink); }
+  header { background: linear-gradient(135deg, var(--yale-blue), #00264d); color:white; padding:1.25rem 1.5rem; }
+  header h1 { margin:0; font-size:1.3rem; }
+  header p { margin:0.25rem 0 0; opacity:0.85; font-size:0.9rem; }
+  main { max-width: 1000px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+  .legend { display:flex; flex-wrap:wrap; gap:0.6rem; margin-bottom:1.25rem; }
+  .legend span { font-size:0.78rem; font-weight:700; padding:0.25rem 0.6rem; border-radius:999px; }
+  .lg-resolved { background:#e8f5e9; color:#1f5c2c; }
+  .lg-open { background:#fff4e5; color:#8a5a00; }
+  .lg-pending { background:#fdecea; color:#8a2a1e; }
+  .lg-shopstep { background:#eef2ff; color:#3730a3; }
+  .lg-outstanding { background:#f0f0f0; color:#555; }
+  .board { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:1rem; }
+  .ticket-card { background:white; border:1px solid var(--border); border-radius:10px; padding:1.1rem 1.25rem; box-shadow:0 1px 3px rgba(0,0,0,0.05); }
+  .ticket-card h2 { margin:0 0 0.2rem; font-size:1.05rem; color:var(--yale-blue); }
+  .ticket-card .sub { font-size:0.8rem; color:#697182; margin-bottom:0.6rem; }
+  .status-badge { display:inline-block; font-size:0.78rem; font-weight:700; padding:0.2rem 0.6rem; border-radius:999px; margin-bottom:0.7rem; }
+  .status-resolved { background:#e8f5e9; color:#1f5c2c; }
+  .status-pending { background:#fdecea; color:#8a2a1e; }
+  .ticket-card h3 { font-size:0.82rem; text-transform:uppercase; letter-spacing:0.02em; color:#697182; margin:0.8rem 0 0.3rem; }
+  .ticket-card ul { margin:0; padding-left:1.1rem; font-size:0.86rem; }
+  .ticket-card ul li { margin-bottom:0.25rem; }
+  .outstanding-box { background:#fdecea; border:1px solid #f3c5c1; border-radius:8px; padding:0.6rem 0.8rem; font-size:0.85rem; margin-top:0.5rem; }
+  .shopstep-box { background:#eef2ff; border:1px solid #c7d2fe; border-radius:8px; padding:0.6rem 0.8rem; font-size:0.85rem; margin-top:0.5rem; }
+  footer { text-align:center; font-size:0.78rem; color:#888; padding:1rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Campus Customs — Resolved Board</h1>
+  <p>Final verified ticket statuses after the Problem 9 run (generated from a genuine, read-only database query — see output/resolved_tickets.json)</p>
+</header>
+<main>
+  <div class="legend">
+    <span class="lg-resolved">Resolved</span>
+    <span class="lg-open">Open</span>
+    <span class="lg-pending">Pending human action</span>
+    <span class="lg-shopstep">Completed shop-side step</span>
+    <span class="lg-outstanding">Outstanding real-world obligation</span>
+  </div>
+
+  <div class="board">
+    <div class="ticket-card">
+      <h2>#101 — Bulldog tee</h2>
+      <div class="sub">Tauhid Zaman · customer_order</div>
+      <span class="status-badge status-pending">OPEN — Pending human action</span>
+      <h3>Completed shop-side steps</h3>
+      <ul>
+        <li>Confirmed 0 units on hand (SKU CC-TEE-WHITE, size S)</li>
+        <li>Confirmed Bulldog Print Co's unpaid invoice was blocking shipment eligibility</li>
+        <li>Human-approved $840.00 payment of invoice 501 — now <code>status: paid</code></li>
+        <li>Re-confirmed vendor is now shipment-eligible</li>
+      </ul>
+      <div class="shopstep-box">All of the above are genuinely completed and verified.</div>
+      <h3>Outstanding real-world obligation</h3>
+      <div class="outstanding-box">No restock order placed (no tool exists to place one; vendor contact is out of scope). 5-day lead time has not started. Customer does not have the item.</div>
+    </div>
+
+    <div class="ticket-card">
+      <h2>#102 — Rent due</h2>
+      <div class="sub">Elm City Properties · rent_notice</div>
+      <span class="status-badge status-resolved">RESOLVED</span>
+      <h3>Completed shop-side steps</h3>
+      <ul>
+        <li>Confirmed $2,400.00 due 2026-09-02 for lease 1</li>
+        <li>Confirmed sufficient cash</li>
+        <li>Human-approved $2,400.00 payment — executed</li>
+        <li>Independently re-verified full satisfaction before closing</li>
+      </ul>
+      <div class="shopstep-box">Nothing outstanding — this is the one ticket where the real-world obligation is fully satisfied.</div>
+    </div>
+
+    <div class="ticket-card">
+      <h2>#103 — Bulk hoodie discount</h2>
+      <div class="sub">Yale AI Club · price_override</div>
+      <span class="status-badge status-pending">OPEN — Pending human action</span>
+      <h3>Completed shop-side steps</h3>
+      <ul>
+        <li>Confirmed 8 of 20 requested units on hand (12-unit shortfall)</li>
+        <li>Confirmed unit cost $22.00 / list price $58.00 ($36.00 margin)</li>
+        <li>Accounting declined to authorize a discount and escalated the pricing call to the Boss</li>
+      </ul>
+      <div class="shopstep-box">Analysis genuinely complete and correct.</div>
+      <h3>Outstanding real-world obligation</h3>
+      <div class="outstanding-box">No discount or partial-quantity offer confirmed with the customer. This system has no customer-communication capability.</div>
+    </div>
+  </div>
+</main>
+<footer>Campus Customs — Homework 5. Self-contained, offline HTML; no backend or network connection required.</footer>
+</body>
+</html>
