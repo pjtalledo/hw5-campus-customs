@@ -1,4 +1,1 @@
-PLACEHOLDER -- repository not yet created or published.
-This file will be replaced with the real public GitHub repository URL once
-the user explicitly approves publication (Homework 5, Problem 11).
-Do not treat this placeholder as a real submission URL.
+https://github.com/pjtalledo/hw5-campus-customs
